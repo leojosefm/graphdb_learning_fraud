@@ -30,7 +30,7 @@ docker compose up -d
 Expected output:
 ```
 ✔ Container neo4j             Started
-✔ Container nexacard_scripts  Started
+✔ Container neo4j_scripts  Started
 ```
 
 ---
@@ -45,7 +45,7 @@ Both containers should show **Up** status:
 ```
 NAME                STATUS
 neo4j               Up
-nexacard_scripts    Up
+neo4j_scripts       Up
 ```
 
 ---
@@ -53,7 +53,7 @@ nexacard_scripts    Up
 ### Step 4 — Generate sample data
 
 ```bash
-docker exec -it nexacard_scripts python generate_data.py
+docker exec -it neo4j_scripts python generate_data.py
 ```
 
 Expected output:
@@ -98,7 +98,7 @@ nexacard_data.json
 ### Step 6 — Load data into Neo4j
 
 ```bash
-docker exec -it nexacard_scripts python load_data.py
+docker exec -it neo4j_scripts python load_data.py
 ```
 
 Expected output:
