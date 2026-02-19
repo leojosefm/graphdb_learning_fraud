@@ -53,7 +53,7 @@ neo4j_scripts       Up
 ### Step 4 — Generate sample data
 
 ```bash
-docker exec -it neo4j_scripts python generate_data.py
+docker exec -it neo4j_scripts python generate_fake_data.py
 ```
 
 Expected output:
@@ -98,7 +98,7 @@ nexacard_data.json
 ### Step 6 — Load data into Neo4j
 
 ```bash
-docker exec -it neo4j_scripts python load_data.py
+docker exec -it neo4j_scripts python load_data_to_graph.py
 ```
 
 Expected output:
