@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   neo4j:
     image: neo4j:latest
@@ -27,5 +26,29 @@ services:
       - ./data/source:/scripts/data/source # output files appear locally here
     command: tail -f /dev/null
 
+  webprotege-mongodb:
+    image: mongo:4.4
+    container_name: webprotege-mongodb
+    restart: unless-stopped
+    volumes:
+      - webprotege_mongodb_data:/data/db
+
+  webprotege:
+    image: protegeproject/webprotege
+    container_name: webprotege
+    restart: unless-stopped
+    depends_on:
+      - webprotege-mongodb
+    environment:
+      - webprotege.mongodb.host=webprotege-mongodb
+      - webprotege.mongodb.port=27017
+    ports:
+      - "5000:8080"
+    volumes:
+      - webprotege_data:/srv/webprotege
+
+
 volumes:
   neo4j_data:
+  webprotege_mongodb_data:
+  webprotege_data:
