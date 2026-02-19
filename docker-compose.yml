@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  neo4j:
+    image: neo4j:latest
+    container_name: neo4j
+    environment:
+      - NEO4J_AUTH=${NEO4J_USER}/${NEO4J_PASSWORD}
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4j_data:/data
+  load-script:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - neo4j
+    environment:
+      - NEO4J_URL=${NEO4J_URL}
+      - NEO4J_USER=${NEO4J_USER}
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD}
+
+volumes:
+  neo4j_data:
