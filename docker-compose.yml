@@ -10,16 +10,22 @@ services:
       - "7687:7687"
     volumes:
       - neo4j_data:/data
-  load-script:
+
+  python:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: neo4j_scripts
     depends_on:
       - neo4j
     environment:
       - NEO4J_URL=${NEO4J_URL}
       - NEO4J_USER=${NEO4J_USER}
       - NEO4J_PASSWORD=${NEO4J_PASSWORD}
+    volumes:
+      - ./scripts:/scripts  # your scripts are still mounted, so edits are instant
+      - ./data/source:/scripts/data/source # output files appear locally here
+    command: tail -f /dev/null
 
 volumes:
   neo4j_data:
