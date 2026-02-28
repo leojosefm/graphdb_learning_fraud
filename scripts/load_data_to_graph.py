@@ -120,7 +120,7 @@ def load_transfers(session, transfers):
     for t in transfers:
         session.run("""
             MERGE (t:PointsTransfer {transfer_id: $transfer_id})
-            SET t.amex_points_debited     = $amex_points_debited,
+            SET t.points_debited     = $points_debited,
                 t.partner_points_credited = $partner_points_credited,
                 t.conversion_ratio        = $conversion_ratio,
                 t.is_promotional          = $is_promotional,

@@ -162,7 +162,7 @@ def generate_transfers(nexa_accounts, loyalty_accounts, devices, customer_loyalt
             "loyalty_account_id":      la_id,
             "partner_id":              la["partner_id"],
             "rate_id":                 rate["rate_id"],
-            "amex_points_debited":     points,
+            "points_debited":     points,
             "partner_points_credited": round(points * rate["ratio"]),
             "conversion_ratio":        rate["ratio"],
             "is_promotional":          rate["is_promotional"],
