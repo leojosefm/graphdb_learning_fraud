@@ -11,6 +11,7 @@ Project to learn more on Graph Database and Neo4j
 
 ---
 
+
 ### Step 1 — Build the Python image
 
 ```bash
@@ -225,3 +226,11 @@ docker exec -it nexacard_scripts bash
 # Restart just Neo4j
 docker compose restart neo4j
 ```
+
+
+## 🛠️ Built With
+
+*   **[Neo4j](https://neo4j.com/):** The core Labeled Property Graph (LPG) database used for high-speed pattern matching and path traversal.
+*   **[Protégé](https://protege.stanford.edu/):** Used to design the OWL (Web Ontology Language) ontology, defining the strict semantic rules and class hierarchies of the loyalty fraud domain.
+*   **[Python (Faker)](https://faker.readthedocs.io/):** For generating synthetic loyalty transaction data.
+*   **[Docker](https://www.docker.com/):** For containerizing the database and ingestion pipeline.
