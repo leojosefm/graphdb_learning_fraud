@@ -234,3 +234,15 @@ docker compose restart neo4j
 *   **[Protégé](https://protege.stanford.edu/):** Used to design the OWL (Web Ontology Language) ontology, defining the strict semantic rules and class hierarchies of the loyalty fraud domain.
 *   **[Python (Faker)](https://faker.readthedocs.io/):** For generating synthetic loyalty transaction data.
 *   **[Docker](https://www.docker.com/):** For containerizing the database and ingestion pipeline.
+
+
+## 🏗️ Architecture: A Hybrid Graph Approach
+
+While Neo4j is exceptionally fast and flexible, it is a schema-lite database. For a complex domain like financial fraud detection involving external partners (airlines, hotels), strict data governance is required. 
+
+This project utilizes a **hybrid ontology-driven architecture**:
+
+1.  **Semantic Modeling (Protégé):** The domain schema is strictly defined using OWL in Protégé. This acts as the "architect's blueprint," defining class hierarchies (e.g., `Partner` $\rightarrow$ `AirlinePartner`) and semantic rules independently of the database.
+2.  **Operational Implementation (Neo4j):** The data and structural rules are then implemented in Neo4j, acting as the high-performance engine to traverse the graph and catch fraud rings in real-time. 
+
+*(Optional: Include an image or screenshot here of your class hierarchy from the Protégé GUI to provide visual proof of your work).*

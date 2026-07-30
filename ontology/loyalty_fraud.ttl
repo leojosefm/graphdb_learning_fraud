@@ -1,0 +1,157 @@
+@prefix : <http://nexa.com/ontologies/loyalty-fraud#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://nexa.com/ontologies/loyalty-fraud> a owl:Ontology ;
+    rdfs:label "Nexa Loyalty Program Fraud Detection Ontology" ;
+    rdfs:comment "Semantic schema defining entities, relationships, and data constraints for Nexa loyalty points transfers." .
+
+#################################################################
+#    Classes (Entities & Hierarchies)
+#################################################################
+
+:Customer a owl:Class ;
+    rdfs:label "Customer" ;
+    rdfs:comment "A registered cardholder in the Nexa system." .
+
+# --- NEW CONSTRAINTS FOR CUSTOMER ---
+
+# A Customer should typically have at most 3 Nexa Accounts
+:Customer rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty :hasNexaAccount ;
+    owl:maxQualifiedCardinality "3"^^xsd:nonNegativeInteger ;
+    owl:onClass :NexaAccount
+] .
+
+# A Customer can have many Loyalty Accounts (e.g., typical upper threshold of 15)
+:Customer rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty :ownsLoyaltyAccount ;
+    owl:maxQualifiedCardinality "15"^^xsd:nonNegativeInteger ;
+    owl:onClass :LoyaltyAccount
+] .
+
+
+:Account a owl:Class ;
+    rdfs:label "Account" ;
+    rdfs:comment "Base ledger class for points or financial accounts." .
+
+:NexaAccount a owl:Class ;
+    rdfs:subClassOf :Account ;
+    rdfs:label "Nexa Account" ;
+    rdfs:comment "A customer's primary credit card account holding points." .
+
+:LoyaltyAccount a owl:Class ;
+    rdfs:subClassOf :Account ;
+    rdfs:label "Loyalty Account" ;
+    rdfs:comment "An external partner loyalty account (e.g., airline miles, hotel program)." .
+
+:Partner a owl:Class ;
+    rdfs:label "Partner" ;
+    rdfs:comment "External reward program vendor (Airlines, Hotels)." .
+
+:Device a owl:Class ;
+    rdfs:label "Device" ;
+    rdfs:comment "Hardware or web client used to interact with the platform." .
+
+:Transaction a owl:Class ;
+    rdfs:label "Transaction" ;
+    rdfs:comment "Base class for points movement events." .
+
+:PointsTransfer a owl:Class ;
+    rdfs:subClassOf :Transaction ;
+    rdfs:label "Points Transfer" ;
+    rdfs:comment "Event representing a points conversion from NexaAccount to LoyaltyAccount." .
+
+:ConversionRate a owl:Class ;
+    rdfs:label "Conversion Rate" ;
+    rdfs:comment "Applied multiplier for converting points to partner currencies." .
+
+#################################################################
+#    Object Properties (Relationships)
+#################################################################
+
+:hasNexaAccount a owl:ObjectProperty ;
+    rdfs:domain :Customer ;
+    rdfs:range :NexaAccount ;
+    rdfs:label "has Nexa account" .
+
+:ownsLoyaltyAccount a owl:ObjectProperty ;
+    rdfs:domain :Customer ;
+    rdfs:range :LoyaltyAccount ;
+    rdfs:label "owns loyalty account" .
+
+:belongsToPartner a owl:ObjectProperty ;
+    rdfs:domain :LoyaltyAccount ;
+    rdfs:range :Partner ;
+    rdfs:label "belongs to partner" .
+
+:rateFor a owl:ObjectProperty ;
+    rdfs:domain :ConversionRate ;
+    rdfs:range :Partner ;
+    rdfs:label "rate for partner" .
+
+:usedDevice a owl:ObjectProperty ;
+    rdfs:domain :Customer ;
+    rdfs:range :Device ;
+    rdfs:label "used device" .
+
+:initiatedTransfer a owl:ObjectProperty ;
+    rdfs:domain :NexaAccount ;
+    rdfs:range :PointsTransfer ;
+    rdfs:label "initiated transfer" .
+
+:transferredTo a owl:ObjectProperty ;
+    rdfs:domain :PointsTransfer ;
+    rdfs:range :LoyaltyAccount ;
+    rdfs:label "transferred to" .
+
+:viaPartner a owl:ObjectProperty ;
+    rdfs:domain :PointsTransfer ;
+    rdfs:range :Partner ;
+    rdfs:label "via partner" .
+
+:appliedRate a owl:ObjectProperty ;
+    rdfs:domain :PointsTransfer ;
+    rdfs:range :ConversionRate ;
+    rdfs:label "applied rate" .
+
+:fromDevice a owl:ObjectProperty ;
+    rdfs:domain :PointsTransfer ;
+    rdfs:range :Device ;
+    rdfs:label "from device" .
+
+#################################################################
+#    Data Properties (Attributes)
+#################################################################
+
+:customer_id a owl:DatatypeProperty ;
+    rdfs:domain :Customer ;
+    rdfs:range xsd:string .
+
+:account_id a owl:DatatypeProperty ;
+    rdfs:domain :NexaAccount ;
+    rdfs:range xsd:string .
+
+:loyalty_account_id a owl:DatatypeProperty ;
+    rdfs:domain :LoyaltyAccount ;
+    rdfs:range xsd:string .
+
+:partner_id a owl:DatatypeProperty ;
+    rdfs:domain :Partner ;
+    rdfs:range xsd:string .
+
+:rate_id a owl:DatatypeProperty ;
+    rdfs:domain :ConversionRate ;
+    rdfs:range xsd:string .
+
+:device_id a owl:DatatypeProperty ;
+    rdfs:domain :Device ;
+    rdfs:range xsd:string .
+
+:transfer_id a owl:DatatypeProperty ;
+    rdfs:domain :PointsTransfer ;
+    rdfs:range xsd:string .
