@@ -14,7 +14,7 @@ services:
     volumes:
       - neo4j_data:/data
       - ./plugins:/plugins
-
+      - ./ontology:/var/lib/neo4j/import
   python:
     build:
       context: .
