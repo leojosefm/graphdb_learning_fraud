@@ -4,11 +4,16 @@ services:
     container_name: neo4j
     environment:
       - NEO4J_AUTH=${NEO4J_USER}/${NEO4J_PASSWORD}
+      # 1. Download APOC (essential utility library for Neo4j) automatically
+      - NEO4J_PLUGINS=["apoc"]
+      # 2. Grant permissions for both APOC and n10s to run
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*,n10s.*
     ports:
       - "7474:7474"
       - "7687:7687"
     volumes:
       - neo4j_data:/data
+      - ./plugins:/plugins
 
   python:
     build:
@@ -24,31 +29,32 @@ services:
     volumes:
       - ./scripts:/scripts  # your scripts are still mounted, so edits are instant
       - ./data/source:/scripts/data/source # output files appear locally here
+      - ./ontology:/ontology #Mount a folder to hold your .ttl file so Python can see it
     command: tail -f /dev/null
 
-  webprotege-mongodb:
-    image: mongo:4.4
-    container_name: webprotege-mongodb
-    restart: unless-stopped
-    volumes:
-      - webprotege_mongodb_data:/data/db
+  # webprotege-mongodb:
+  #   image: mongo:4.4
+  #   container_name: webprotege-mongodb
+  #   restart: unless-stopped
+  #   volumes:
+  #     - webprotege_mongodb_data:/data/db
 
-  webprotege:
-    image: protegeproject/webprotege
-    container_name: webprotege
-    restart: unless-stopped
-    depends_on:
-      - webprotege-mongodb
-    environment:
-      - webprotege.mongodb.host=webprotege-mongodb
-      - webprotege.mongodb.port=27017
-    ports:
-      - "5000:8080"
-    volumes:
-      - webprotege_data:/srv/webprotege
+  # webprotege:
+  #   image: protegeproject/webprotege
+  #   container_name: webprotege
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - webprotege-mongodb
+  #   environment:
+  #     - webprotege.mongodb.host=webprotege-mongodb
+  #     - webprotege.mongodb.port=27017
+  #   ports:
+  #     - "5000:8080"
+  #   volumes:
+  #     - webprotege_data:/srv/webprotege
 
 
 volumes:
   neo4j_data:
-  webprotege_mongodb_data:
-  webprotege_data:
+  # webprotege_mongodb_data:
+  # webprotege_data:
